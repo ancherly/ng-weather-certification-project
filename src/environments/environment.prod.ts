@@ -1,3 +1,6 @@
 export const environment = {
-  production: true
+  production: true,
+  cache: {
+    durationMS: 7200000,
+  },
 };

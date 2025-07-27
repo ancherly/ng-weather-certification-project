@@ -1,0 +1,17 @@
+<div *ngIf="location" class="well flex">
+  <div>
+    <h4>Current conditions: {{ location.data.weather[0].main }}</h4>
+    <h4>Temperatures today:</h4>
+    <p>
+      Current {{ location.data.main.temp | number : ".0-0" }} - Max
+      {{ location.data.main.temp_max | number : ".0-0" }} - Min
+      {{ location.data.main.temp_min | number : ".0-0" }}
+    </p>
+    <p>
+      <a [routerLink]="['/forecast', location.zip]">Show 5-day forecast</a>
+    </p>
+  </div>
+  <div>
+    <img [src]="getWeatherIcon(location.data.weather[0].id)" />
+  </div>
+</div>

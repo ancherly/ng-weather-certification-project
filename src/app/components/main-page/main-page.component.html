@@ -1,0 +1,15 @@
+<div class="container-fluid">
+  <div class="cache-info">
+    Cache duration: <strong>{{ cacheDurationInfo }}</strong>
+  </div>
+  <app-zipcode-entry></app-zipcode-entry>
+  <app-tabs
+    [tabs]="tabs()"
+    (selected)="selectLocationCondition($event)"
+    (closed)="removeLocation($event)"
+  >
+    <ng-template #tabContent let-id="id">
+      <app-current-conditions [zipcode]="id" />
+    </ng-template>
+  </app-tabs>
+</div>

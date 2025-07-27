@@ -1,0 +1,20 @@
+<ul class="tab-header">
+  <li
+    *ngFor="let tab of tabs"
+    [class.active]="isActive(tab.id)"
+    (click)="selectTab(tab.id)"
+  >
+    {{ tab.label }}
+    <span class="close" (click)="closeTab(tab.id); $event.stopPropagation()"
+      >&times;</span
+    >
+  </li>
+</ul>
+
+<div class="tab-body">
+  <ng-container
+    *ngIf="tabContentTemplate && activeTabId"
+    [ngTemplateOutlet]="tabContentTemplate"
+    [ngTemplateOutletContext]="{ id: activeTabId }"
+  ></ng-container>
+</div>

@@ -1,19 +1,23 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-
-import { AppComponent } from './app.component';
-import { ZipcodeEntryComponent } from './zipcode-entry/zipcode-entry.component';
-import {LocationService} from "./location.service";
-import { ForecastsListComponent } from './forecasts-list/forecasts-list.component';
-import {WeatherService} from "./weather.service";
-import { CurrentConditionsComponent } from './current-conditions/current-conditions.component';
-import { MainPageComponent } from './main-page/main-page.component';
-import {RouterModule} from "@angular/router";
-import {routing} from "./app.routing";
-import {HttpClientModule} from "@angular/common/http";
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
+import { BrowserModule } from "@angular/platform-browser";
+import { APP_INITIALIZER, NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { AppComponent } from "./app.component";
+import { ZipcodeEntryComponent } from "./components/zipcode-entry/zipcode-entry.component";
+import { ForecastsListComponent } from "./components/forecasts-list/forecasts-list.component";
+import { CurrentConditionsComponent } from "./components/current-conditions/current-conditions.component";
+import { MainPageComponent } from "./components/main-page/main-page.component";
+import { RouterModule } from "@angular/router";
+import { routing } from "./app.routing";
+import { HttpClientModule } from "@angular/common/http";
+import { ServiceWorkerModule } from "@angular/service-worker";
+import { environment } from "../environments/environment";
+import { TabsComponent } from "./components/tabs/tabs.component";
+import { CacheService } from "./services/cache.service";
+import {
+  CACHE_DURATION_MS,
+  cleanCacheFactory,
+  DEFAULT_CACHE_DURATION_MS,
+} from "./config/cache.config";
 
 @NgModule({
   declarations: [
@@ -21,7 +25,8 @@ import { environment } from '../environments/environment';
     ZipcodeEntryComponent,
     ForecastsListComponent,
     CurrentConditionsComponent,
-    MainPageComponent
+    MainPageComponent,
+    TabsComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,9 +34,24 @@ import { environment } from '../environments/environment';
     HttpClientModule,
     RouterModule,
     routing,
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register("/ngsw-worker.js", {
+      enabled: environment.production,
+    }),
   ],
-  providers: [LocationService, WeatherService],
-  bootstrap: [AppComponent]
+  providers: [
+    // APP_INITIALIZER for clean expired forecast cache
+    {
+      provide: APP_INITIALIZER,
+      useFactory: cleanCacheFactory,
+      deps: [CacheService],
+      multi: true,
+    },
+    // DI to provide environment or default cache duration
+    {
+      provide: CACHE_DURATION_MS,
+      useValue: environment.cache?.durationMS ?? DEFAULT_CACHE_DURATION_MS,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
