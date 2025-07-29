@@ -1,0 +1,94 @@
+{
+  "configVersion": 1,
+  "timestamp": 1753816836834,
+  "index": "/ng-weather-certification-project/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/ng-weather-certification-project/favicon.ico",
+        "/ng-weather-certification-project/index.html",
+        "/ng-weather-certification-project/main.94d55e432273e2c6.js",
+        "/ng-weather-certification-project/polyfills.fd557b2219a3253b.js",
+        "/ng-weather-certification-project/runtime.c667cca2070ce458.js",
+        "/ng-weather-certification-project/styles.38c785e76a767979.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/ng-weather-certification-project/assets/icons/icon-128x128.png",
+        "/ng-weather-certification-project/assets/icons/icon-144x144.png",
+        "/ng-weather-certification-project/assets/icons/icon-152x152.png",
+        "/ng-weather-certification-project/assets/icons/icon-192x192.png",
+        "/ng-weather-certification-project/assets/icons/icon-384x384.png",
+        "/ng-weather-certification-project/assets/icons/icon-512x512.png",
+        "/ng-weather-certification-project/assets/icons/icon-72x72.png",
+        "/ng-weather-certification-project/assets/icons/icon-96x96.png",
+        "/ng-weather-certification-project/assets/weather.json"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "WeatherAPI",
+      "patterns": [
+        "http:\\/\\/api\\.openweathermap\\.org\\/data\\/.*"
+      ],
+      "strategy": "freshness",
+      "maxAge": 21600000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/ng-weather-certification-project/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "/ng-weather-certification-project/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "/ng-weather-certification-project/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "/ng-weather-certification-project/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "/ng-weather-certification-project/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "/ng-weather-certification-project/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "/ng-weather-certification-project/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "/ng-weather-certification-project/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "/ng-weather-certification-project/assets/weather.json": "66917a0e0b291aa6498489fc9820dfaa3529ceb9",
+    "/ng-weather-certification-project/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
+    "/ng-weather-certification-project/index.html": "2955158ab4353e3d145a00f635603d6eb1465e10",
+    "/ng-weather-certification-project/main.94d55e432273e2c6.js": "5601943f12597af4fd6fdb280247afabe47141ac",
+    "/ng-weather-certification-project/polyfills.fd557b2219a3253b.js": "f6196a1360092860d17eca9a58a446e0c798c994",
+    "/ng-weather-certification-project/runtime.c667cca2070ce458.js": "d13ea8b48d070bc0bec718a11c2c413c32473d16",
+    "/ng-weather-certification-project/styles.38c785e76a767979.css": "952230387629adb2d8722c7355995355185a814b"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
