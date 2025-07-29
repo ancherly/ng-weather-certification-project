@@ -2,6 +2,7 @@ import { Component, effect, inject, signal } from "@angular/core";
 import { LocationService } from "../../services/location.service";
 import { WeatherService } from "app/services/weather.service";
 import { CACHE_DURATION_MS } from "app/config/cache.config";
+import { Tab } from "app/models/tab";
 
 @Component({
   selector: "app-main-page",
@@ -11,8 +12,9 @@ export class MainPageComponent {
   private readonly locationService = inject(LocationService);
   private readonly weatherService = inject(WeatherService);
   private readonly cacheDurationMs = inject(CACHE_DURATION_MS);
-  readonly tabs = signal<{ id: string; label: string }[]>([]);
+  readonly tabs = signal<Tab[]>([]);
 
+  //Reactive detection of locations with conditions to manage tabs
   constructor() {
     effect(
       () => {
@@ -38,6 +40,7 @@ export class MainPageComponent {
     this.weatherService.removeConditions(zip);
   }
 
+  //Method to see properly info cache configured
   get cacheDurationInfo(): string {
     const ms = this.cacheDurationMs;
 
@@ -47,7 +50,7 @@ export class MainPageComponent {
     }
 
     if (ms < 3600000) {
-      const minutes = Math.floor(ms / 60_000);
+      const minutes = Math.floor(ms / 60000);
       return `${minutes}min`;
     }
 

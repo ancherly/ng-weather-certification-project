@@ -4,7 +4,7 @@ const LOCATIONS = "locations";
 
 @Injectable({ providedIn: "root" })
 export class LocationService {
-  // Reactive list of zip codes, saved in localStorage
+  // Reactive list of zip codes
   private _locations = signal<string[]>(this.loadLocationsFromCache());
 
   get locations(): Signal<string[]> {

@@ -49,13 +49,20 @@ export class TabsComponent {
   }
 
   closeTab(id: string): void {
-    this.tabs = this.tabs.filter((tab) => tab.id !== id);
-
-    if (this.activeTabId === id) {
-      this.activeTabId = this.tabs[0]?.id ?? null;
-    }
+    const tabs = this.tabs;
+    const index = tabs.findIndex((tab) => tab.id === id);
+    const wasActive = this.activeTabId === id;
 
     this.closed.emit(id);
+
+    if (wasActive && tabs.length > 1) {
+      const nextTab = tabs[index === 0 ? 1 : index - 1];
+      this.selectTab(nextTab.id);
+    }
+
+    if (tabs.length === 1) {
+      this.activeTabId = null;
+    }
   }
 
   isActive(id: string): boolean {

@@ -1,11 +1,4 @@
-import {
-  computed,
-  effect,
-  inject,
-  Injectable,
-  Signal,
-  signal,
-} from "@angular/core";
+import { inject, Injectable, Signal, signal } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { tap } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
