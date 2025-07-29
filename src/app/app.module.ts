@@ -9,7 +9,6 @@ import { MainPageComponent } from "./components/main-page/main-page.component";
 import { RouterModule } from "@angular/router";
 import { routing } from "./app.routing";
 import { HttpClientModule } from "@angular/common/http";
-import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
 import { TabsComponent } from "./components/tabs/tabs.component";
 import { CacheService } from "./services/cache.service";
@@ -34,9 +33,6 @@ import {
     HttpClientModule,
     RouterModule,
     routing,
-    ServiceWorkerModule.register("/ngsw-worker.js", {
-      enabled: environment.production,
-    }),
   ],
   providers: [
     // APP_INITIALIZER for clean expired forecast cache
