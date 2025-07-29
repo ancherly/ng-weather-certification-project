@@ -1,29 +1,46 @@
-# NgWeather
+# 🌦️ Angular Weather App — Certification Level 3
 
-An app that showcases how to build a simple app with Angular (running on 14.x)
+This is a weather forecast application enhanced as part of the Angular Level 3 certification project.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli).
+🔗 **Live Demo:** https://ancherly.github.io/ng-weather-certification-project/
 
-## Development server
+## 🛠️ How to start
+
+1. Clone the `dev` branch of the repository:
+
+```bash
+git clone -b dev https://github.com/ancherly/ng-weather-certification-project.git
+cd ng-weather-certification-project
+```
+
+2. Install dependencies:
+
+> ⚠️ **Important:**  
+> This project was built using **Angular 17**, so it is recommended to use a compatible Angular CLI version like `17.3.17` to avoid dependency conflicts.
+
+```bash
+npm install
+```
+
+3. Start the development server:
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## ⚙️ Cache Duration Configuration
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+By default, the cache duration ⏱️ is set to **2 hours** (in development mode).  
+To facilitate testing and project demo, the cache duration on the public preview is set to **10 seconds**.
 
-## Build
+> 🛈 A label has been added in the UI to clearly show the current cache expiration time configured.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+🔔 You can change this value from `src/environments/environment.ts` or `environment.prod.ts`:
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+```ts
+export const environment = {
+  production: true,
+  cacheDurationMs: 10000, //miliseconds
+};
+```
 
 ## Further help
 

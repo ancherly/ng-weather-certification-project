@@ -15,7 +15,6 @@ export interface Tab {
 
 @Component({
   selector: "app-tabs",
-  imports: [],
   templateUrl: "./tabs.component.html",
   styleUrl: "./tabs.component.css",
 })
