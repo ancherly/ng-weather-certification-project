@@ -15,8 +15,12 @@ cd ng-weather-certification-project
 
 2. Install dependencies:
 
-> ⚠️ **Important:**  
-> This project was built using **Angular 17**, so it is recommended to use a compatible Angular CLI version like `17.3.17` to avoid dependency conflicts.
+> ⚠️ This project was built using **Angular 17**, so it is recommended to use a compatible Angular CLI version like `17.3.17` to avoid dependency conflicts.
+> Alternatively, if you prefer not to change your global CLI version, you can install dependencies with:
+>
+> ```bash
+> npm install --legacy-peer-deps
+> ```
 
 ```bash
 npm install
@@ -33,12 +37,25 @@ To facilitate testing and project demo, the cache duration on the public preview
 
 > 🛈 A label has been added in the UI to clearly show the current cache expiration time configured.
 
-🔔 You can change this value from `src/environments/environment.ts` or `environment.prod.ts`:
+🔔 In dev mode, you can change this value from `src/environments/environment.ts`:
+
+```ts
+export const environment = {
+  production: false,
+  cache: {
+    durationMS: 7200000, // (2 hours)
+  },
+};
+```
+
+🔁 Shame in prod mode from `src/environments/environment.prod.ts`:
 
 ```ts
 export const environment = {
   production: true,
-  cacheDurationMs: 10000, //miliseconds
+  cache: {
+    durationMS: 10000, // (10 seconds)
+  },
 };
 ```
 
