@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { WeatherService } from "../../services/weather.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Forecast } from "./forecast.type";
 
 @Component({
@@ -12,12 +12,22 @@ export class ForecastsListComponent {
   zipcode: string;
   forecast: Forecast;
 
-  constructor(protected weatherService: WeatherService, route: ActivatedRoute) {
+  constructor(
+    protected weatherService: WeatherService,
+    route: ActivatedRoute,
+    private router: Router
+  ) {
     route.params.subscribe((params) => {
       this.zipcode = params["zipcode"];
       weatherService
         .getForecast(this.zipcode)
         .subscribe((data) => (this.forecast = data));
+    });
+  }
+
+  goToMain(): void {
+    this.router.navigate(["/"], {
+      state: { lastTab: this.zipcode },
     });
   }
 }
