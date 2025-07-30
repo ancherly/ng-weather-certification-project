@@ -18,6 +18,7 @@ export class ZipcodeEntryComponent {
       next: (data) => {
         this.locationService.addLocation(zipcode);
         this.weatherService.addCurrentConditions(zipcode, data);
+        this.zipcode = "";
       },
       error: () => alert(`Invalid or unavailable postal code: ${zipcode}`),
     });
