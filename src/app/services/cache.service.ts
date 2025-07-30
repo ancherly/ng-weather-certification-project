@@ -11,23 +11,28 @@ export class CacheService {
   //Cache duration injected from the environment config or default value
   private readonly cacheDurationMs = inject(CACHE_DURATION_MS);
 
-  //Generic method that saves a value in localStorage with an expiration.
-  set<T>(key: string, value: T): void {
-    const entry: CacheEntry<T> = {
+  //Generic method that saves a value in localStorage with an expiration or not
+  set<T>(key: string, value: T, persistWithoutExpiration = false): void {
+    const entry: Partial<CacheEntry<T>> = {
       value,
-      expireAtMs: Date.now() + this.cacheDurationMs,
     };
+
+    if (!persistWithoutExpiration) {
+      entry.expireAtMs = Date.now() + this.cacheDurationMs;
+    }
+
     localStorage.setItem(key, JSON.stringify(entry));
   }
 
   //Returns the required value if it has not yet expired
-  get<T>(key: string): T | null {
+  //With flag to ignoreExpiration
+  get<T>(key: string, ignoreExpiration = false): T | null {
     const raw = localStorage.getItem(key);
     if (!raw) return null;
 
     try {
       const entry: CacheEntry<T> = JSON.parse(raw);
-      if (Date.now() > entry.expireAtMs) {
+      if (!ignoreExpiration && Date.now() > entry.expireAtMs) {
         localStorage.removeItem(key);
         return null;
       }

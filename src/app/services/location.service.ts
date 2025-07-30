@@ -1,9 +1,11 @@
-import { Injectable, Signal, signal } from "@angular/core";
-
-const LOCATIONS = "locations";
+import { inject, Injectable, Signal, signal } from "@angular/core";
+import { CacheService } from "./cache.service";
+import { CacheKeys } from "app/config/cache.config";
 
 @Injectable({ providedIn: "root" })
 export class LocationService {
+  private readonly cacheService = inject(CacheService);
+
   // Reactive list of zip codes
   private _locations = signal<string[]>(this.loadLocationsFromCache());
 
@@ -31,30 +33,20 @@ export class LocationService {
 
   //Load available locations from localStorage when initializing the signal
   private loadLocationsFromCache(): string[] {
-    const stored = localStorage.getItem(LOCATIONS);
-    if (!stored) return [];
-
-    try {
-      return JSON.parse(stored);
-    } catch (e) {
-      console.warn(
-        "An error occurred while retrieving the locations from local storage.",
-        e
-      );
-      return [];
-    }
+    const storedLocations = this.cacheService.get<string[]>(
+      CacheKeys.LOCATIONS,
+      true
+    );
+    if (!storedLocations) return [];
+    else return storedLocations;
   }
 
   // Save locations to localStorage after any modification.
   private saveLocations(locations: string[]): void {
-    try {
-      if (locations.length === 0) {
-        localStorage.removeItem(LOCATIONS);
-      } else {
-        localStorage.setItem(LOCATIONS, JSON.stringify(locations));
-      }
-    } catch (e) {
-      console.warn("Error saving locations to localStorage", e);
+    if (locations.length === 0) {
+      this.cacheService.clear(CacheKeys.LOCATIONS);
+    } else {
+      this.cacheService.set(CacheKeys.LOCATIONS, locations, true);
     }
   }
 }

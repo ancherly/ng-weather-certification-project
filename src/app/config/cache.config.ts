@@ -12,6 +12,15 @@ export const CACHE_DURATION_MS = new InjectionToken<number>(
 // Factory used in APP_INITIALIZER to clean up expired forecast wheaters on app startup
 export function cleanCacheFactory(cache: CacheService): () => void {
   return () => {
-    cache.clearExpiredCache("weather-forecast-");
+    cache.clearExpiredCache(CacheKeys.WEATHER_CURRENT);
   };
 }
+
+//Centralize available cache keys
+export const CacheKeys = {
+  WEATHER_CURRENT: "weather-current",
+  WEATHER_CURRENT_ZIP: (zip: string) => `weather-current-${zip}`,
+  FORECAST: "weather-forecast",
+  WEATHER_FORECAST_ZIP: (zip: string) => `weather-forecast-${zip}`,
+  LOCATIONS: "locations",
+} as const;

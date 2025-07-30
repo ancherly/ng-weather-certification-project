@@ -7,11 +7,12 @@ import { ConditionsAndZip } from "../models/conditions-and-zip.type";
 import { Forecast } from "../components/forecasts-list/forecast.type";
 import { LocationService } from "./location.service";
 import { CacheService } from "./cache.service";
+import { CacheKeys } from "app/config/cache.config";
 
 @Injectable({ providedIn: "root" })
 export class WeatherService {
   private readonly http = inject(HttpClient);
-  private readonly cache = inject(CacheService);
+  private readonly cacheService = inject(CacheService);
   private readonly locationService = inject(LocationService);
 
   static URL = "https://api.openweathermap.org/data/2.5";
@@ -19,12 +20,13 @@ export class WeatherService {
   static ICON_URL =
     "https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-hdpi/";
   private currentConditions = signal<ConditionsAndZip[]>(
-    this.loadLocationsFromCache()
+    this.loadConditionsFromCache()
   );
 
   fetchOrLoadConditions(zip: string): void {
-    const cacheKey = `weather-current-${zip}`;
-    const cached = this.cache.get<CurrentConditions>(cacheKey);
+    const cached = this.cacheService.get<CurrentConditions>(
+      CacheKeys.WEATHER_CURRENT_ZIP(zip)
+    );
     if (cached) return;
 
     this.fetchConditions(zip).subscribe({
@@ -49,15 +51,15 @@ export class WeatherService {
 
   //Fetch the information for the 5 days from localStorage or the API.
   getForecast(zip: string): Observable<Forecast> {
-    const cacheKey = `weather-forecast-${zip}`;
-    const cached = this.cache.get<Forecast>(cacheKey);
+    const cacheKey = CacheKeys.WEATHER_FORECAST_ZIP(zip);
+    const cached = this.cacheService.get<Forecast>(cacheKey);
     if (cached) return of(cached);
 
     return this.http
       .get<Forecast>(
         `${WeatherService.URL}/forecast/daily?zip=${zip},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`
       )
-      .pipe(tap((data) => this.cache.set(cacheKey, data)));
+      .pipe(tap((data) => this.cacheService.set(cacheKey, data)));
   }
 
   getWeatherIcon(id): string {
@@ -77,7 +79,7 @@ export class WeatherService {
   }
 
   addCurrentConditions(zipcode: string, data: CurrentConditions): void {
-    this.cache.set(`weather-current-${zipcode}`, data);
+    this.cacheService.set(CacheKeys.WEATHER_CURRENT_ZIP(zipcode), data);
     this.currentConditions.update((list) => [...list, { zip: zipcode, data }]);
   }
 
@@ -85,32 +87,26 @@ export class WeatherService {
     this.currentConditions.update((list) =>
       list.filter((entry) => entry.zip !== zip)
     );
-    this.cache.clear(`weather-current-${zip}`);
-    this.cache.clear(`weather-forecast-${zip}`);
+    this.cacheService.clear(CacheKeys.WEATHER_CURRENT_ZIP(zip));
+    this.cacheService.clear(CacheKeys.WEATHER_FORECAST_ZIP(zip));
   }
 
-  private loadLocationsFromCache(): ConditionsAndZip[] {
-    const stored = this.locationService.locations();
-    if (!stored) return [];
+  //Get data from cache and normalice data to object
+  private loadConditionsFromCache(): ConditionsAndZip[] {
+    const storedLocations = this.locationService.locations();
+    if (!storedLocations) return [];
 
     const conditions: ConditionsAndZip[] = [];
 
-    stored.forEach((zipCode) => {
-      const raw = localStorage.getItem(`weather-current-${zipCode}`);
-      if (raw) {
-        try {
-          const parsed = JSON.parse(raw);
-          const data = parsed?.value;
-
-          if (data) {
-            conditions.push({ zip: zipCode, data });
-          }
-        } catch (e) {
-          console.warn("Error parsing condition from cache", e);
-        }
+    storedLocations.forEach((zipCode) => {
+      const currentConditionCache = this.cacheService.get<CurrentConditions>(
+        CacheKeys.WEATHER_CURRENT_ZIP(zipCode),
+        true
+      );
+      if (currentConditionCache) {
+        conditions.push({ zip: zipCode, data: currentConditionCache });
       }
     });
-
     return conditions;
   }
 }
